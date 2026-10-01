@@ -72,6 +72,30 @@ int main(int argc, char* argv[])
     vkGetPhysicalDeviceProperties2(devices[deviceIndex], &deviceProperties);
     std::cout << "Selected device: " << deviceProperties.properties.deviceName << std::endl;
 
+    // Queues
+    uint32_t queueFamilyCount{ 0 };
+    vkGetPhysicalDeviceQueueFamilyProperties(devices[deviceIndex], &queueFamilyCount, nullptr);
+    std::vector<VkQueueFamilyProperties> queueFamilies(queueFamilyCount);
+    vkGetPhysicalDeviceQueueFamilyProperties(devices[deviceIndex], &queueFamilyCount, queueFamilies.data());
+    std::cout << "There is " << queueFamilyCount << " family queue(s) available." << std::endl;
+    uint32_t queueFamily{ 0 };
+    for (size_t i = 0; i < queueFamilies.size(); i++)
+    {
+        if (queueFamilies[i].queueFlags & VK_QUEUE_GRAPHICS_BIT)
+        {
+            queueFamily = i;
+            break;
+        }
+    }
+    chk(SDL_Vulkan_GetPresentationSupport(instance, devices[deviceIndex], queueFamily));
+    const float qfpriorities{ 1.0f };
+    VkDeviceQueueCreateInfo queueCI{
+        .sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
+        .queueFamilyIndex = queueFamily,
+        .queueCount = 1,
+        .pQueuePriorities = &qfpriorities
+    };
+
 
     // Tear Down
     SDL_Quit();
