@@ -2,8 +2,10 @@
  * Copyright (c) 2026 AIperture-Labs & Xavier Beheydt <xavier.beheydt@gmail.com>
  */
 
+#include <cassert>
 #include <cstdlib>
 #include <iostream>
+#include <vector>
 
 #define VOLK_IMPLEMENTATION
 #include <SDL3/SDL.h>
@@ -53,6 +55,23 @@ int main(int argc, char* argv[])
     };
     chk(vkCreateInstance(&instanceCI, nullptr, &instance));
     volkLoadInstance(instance);
+
+    // Device selection
+    uint32_t deviceCount{ 0 };
+    chk(vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr));
+    std::vector<VkPhysicalDevice> devices(deviceCount);
+    chk(vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data()));
+    std::cout << "There is " << deviceCount << " device(s) available." << std:endl;
+    uint32_t deviceIndex{ 0 };
+    if (argc > 1)
+    {
+        deviceIndex = std::stoi(argv[1]);
+        assert(deviceIndex < deviceCount);
+    }
+    VkPhysicalDeviceProperties2 deviceProperties{ .sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PROPERTIES_2 };
+    vkGetPhysicalDeviceProperties2(devices[deviceIndex], &deviceProperties);
+    std::cout << "Selected device: " << deviceProperties.properties.deviceName << std::endl;
+
 
     // Tear Down
     SDL_Quit();
