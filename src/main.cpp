@@ -34,13 +34,13 @@ int main(int argc, char* argv[])
     };
     uint32_t instanceExtensionCount{ 0 };
     char const* const* instanceExtensions{ SDL_Vulkan_GetInstanceExtensions(&instanceExtensionCount) };
-    VkInstanceCreationInfo instanceCI{
+    VkInstanceCreateInfo instanceCI{
         .sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
         .pApplicationInfo = &appInfo,
-        enabledExtensionCount = instanceExtensionCount,
-        ppEnabledExtensionsNames = instanceExtensions,
+        .enabledExtensionCount = instanceExtensionCount,
+        .ppEnabledExtensionNames = instanceExtensions,
     };
-    chk(vkCreateInstance(&instanceCI, nullptr, &instance);
+    chk(vkCreateInstance(&instanceCI, nullptr, &instance));
 
     return EXIT_SUCCESS;
 }
