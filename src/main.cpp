@@ -23,8 +23,19 @@ static inline void chk(VkResult result)
     }
 }
 
+static inline void chk(bool result)
+{
+    if (!result)
+    {
+        std::cerr << "Call returned an error!" << std::endl;
+        exit(result);
+    }
+}
+
 int main(int argc, char* argv[])
 {
+    chk(SDL_Init(SDL_INIT_VIDEO));
+	chk(SDL_Vulkan_LoadLibrary(NULL));
     volkInitialize();
     // Instance
     VkApplicationInfo appInfo{
@@ -42,5 +53,9 @@ int main(int argc, char* argv[])
     };
     chk(vkCreateInstance(&instanceCI, nullptr, &instance));
 
+    // Tear Down
+    SDL_Quit();
+	// vkDestroyDevice(device, nullptr);
+	vkDestroyInstance(instance, nullptr);
     return EXIT_SUCCESS;
 }
