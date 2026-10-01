@@ -43,15 +43,16 @@ int main(int argc, char* argv[])
         .pApplicationName = "How to Vulkan",
         .apiVersion = VK_API_VERSION_1_3,
     };
-    uint32_t instanceExtensionCount{ 0 };
-    char const* const* instanceExtensions{ SDL_Vulkan_GetInstanceExtensions(&instanceExtensionCount) };
+    uint32_t instanceExtensionsCount{ 0 };
+    char const* const* instanceExtensions{ SDL_Vulkan_GetInstanceExtensions(&instanceExtensionsCount) };
     VkInstanceCreateInfo instanceCI{
         .sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
         .pApplicationInfo = &appInfo,
-        .enabledExtensionCount = instanceExtensionCount,
+        .enabledExtensionCount = instanceExtensionsCount,
         .ppEnabledExtensionNames = instanceExtensions,
     };
     chk(vkCreateInstance(&instanceCI, nullptr, &instance));
+    volkLoadInstance(instance);
 
     // Tear Down
     SDL_Quit();
