@@ -2,11 +2,42 @@
  * Copyright (c) 2026 AIperture-Labs & Xavier Beheydt <xavier.beheydt@gmail.com>
  */
 
+#include <cstdlib>
 #include <iostream>
 
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_vulkan.h>
+#include <vulkan/vulkan.h>
 
-int main(void)
+
+VkInstance instance{ VK_NULL_HANDLE };
+
+static inline void chk(VkResult result)
 {
-    std::cout << "Hello, World!" << std::endl;
-    return 0;
+    if (result != VK_SUCCESS)
+    {
+        std::cerr << "Vulkan call returned an error (" << result << ")" <<std::endl;
+        exit(result);
+    }
+}
+
+int main(int argc, char* argv[])
+{
+    // Instance
+    VkApplicationInfo appInfo{
+        .sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
+        .pApplicationName = "How to Vulkan",
+        .apiVersion = VK_API_VERSION_1_3,
+    };
+    uint32_t instanceExtensionCount{ 0 };
+    char const* const* instanceExtensions{ SDL_Vulkan_GetInstanceExtensions(&instanceExtensionCount) };
+    VkInstanceCreationInfo instanceCI{
+        .sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
+        .pApplicationInfo = &appInfo,
+        enabledExtensionCount = instanceExtensionCount,
+        ppEnabledExtensionsNames = instanceExtensions,
+    };
+    chk(vkCreateInstance(&instanceCI, nullptr, &instance);
+
+    return EXIT_SUCCESS;
 }
