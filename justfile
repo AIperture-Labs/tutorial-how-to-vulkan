@@ -56,9 +56,12 @@ uninstall-deps:
     fi
     {{uninstall}} "${!candidates[@]}"
 
-build:
-    cmake --preset debug
-    cmake --build --preset debug -j
+# Configure the CMake project with the given preset
+configure preset="debug":
+    cmake --preset {{preset}}
+
+build preset="debug": configure
+    cmake --build --preset {{preset}} -j
 
 clean-build:
     {{rmdir}} build
