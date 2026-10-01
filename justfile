@@ -4,7 +4,7 @@
 rmdir := if os_family() == "windows" { "rm -Force" } else { "rm -fr" }
 install := "paru -S"
 uninstall := "paru -Rs"
-deps := "llvm vulkan-devel lib32-nvidia-utils renderdoc glm ninja clang volk sdl3"
+deps := "llvm lldb vulkan-devel lib32-nvidia-utils renderdoc glm ninja clang volk sdl3"
 
 
 [default]
@@ -65,3 +65,6 @@ clean-build:
 
 run: build
     ./build/debug/bin/how-to-vulkan
+
+debug: build
+    lldb ./build/debug/bin/how-to-vulkan
