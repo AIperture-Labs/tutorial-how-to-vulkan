@@ -22,5 +22,17 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/")
 
 
 include_directories(extern/tinyobj)
+include_directories(extern/ktx/include)
+include_directories(extern/ktx/other_include)
 
+set(KTX_DIR ${CMAKE_CURRENT_SOURCE_DIR}/extern/ktx)
+set(KTX_SOURCES
+    ${KTX_DIR}/lib/texture.c
+    ${KTX_DIR}/lib/hashlist.c
+    ${KTX_DIR}/lib/checkheader.c
+    ${KTX_DIR}/lib/swap.c
+    ${KTX_DIR}/lib/memstream.c
+    ${KTX_DIR}/lib/filestream.c
+    ${KTX_DIR}/lib/vkloader.c)
+add_library(ktx STATIC ${KTX_SOURCES})
 add_executable(how-to-vulkan src/main.cpp)
