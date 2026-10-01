@@ -5,8 +5,10 @@
 #include <cstdlib>
 #include <iostream>
 
+#define VOLK_IMPLEMENTATION
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_vulkan.h>
+#include <volk.h>
 #include <vulkan/vulkan.h>
 
 
@@ -23,6 +25,7 @@ static inline void chk(VkResult result)
 
 int main(int argc, char* argv[])
 {
+    volkInitialize();
     // Instance
     VkApplicationInfo appInfo{
         .sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
