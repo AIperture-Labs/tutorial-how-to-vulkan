@@ -61,7 +61,7 @@ int main(int argc, char* argv[])
     chk(vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr));
     std::vector<VkPhysicalDevice> devices(deviceCount);
     chk(vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data()));
-    std::cout << "There is " << deviceCount << " device(s) available." << std:endl;
+    std::cout << "There is " << deviceCount << " device(s) available." << std::endl;
     uint32_t deviceIndex{ 0 };
     if (argc > 1)
     {
