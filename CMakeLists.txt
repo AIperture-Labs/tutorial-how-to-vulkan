@@ -3,12 +3,13 @@
 cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 include(FetchContent)
-
+include(CompileCommandsSymlink)
 
 project(HowToVulkan VERSION 2026 LANGUAGES C CXX)
 
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+setup_compile_commands_symlink()
 
 if(WIN32)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DVK_USE_PLATFORM_WIN32_KHR")
