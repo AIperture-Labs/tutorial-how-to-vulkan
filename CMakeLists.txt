@@ -23,6 +23,14 @@ endif()
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/")
 
 
+FetchContent_Declare(VulkanMemoryAllocator
+    GIT_REPOSITORY https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator
+    GIT_TAG v3.4.0
+    GIT_SHALLOW ON
+    EXCLUDE_FROM_ALL
+    SYSTEM)
+FetchContent_MakeAvailable(VulkanMemoryAllocator)
+
 find_package(Vulkan REQUIRED)
 find_package(volk CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
@@ -53,6 +61,7 @@ elseif (NOT WIN32)
     target_link_libraries(ktx PUBLIC $ENV{VULKAN_SDK}/lib/libvulkan.so)
 endif()
 
+
 ## Set the main executable
 add_executable(how-to-vulkan src/main.cpp)
 target_compile_definitions(how-to-vulkan PRIVATE VK_NO_PROTOTYPES)
@@ -61,7 +70,7 @@ if (WIN32)
 endif()
 set_target_properties(how-to-vulkan PROPERTIES DEBUGGER_WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 target_compile_features(how-to-vulkan PRIVATE cxx_std_20)
-target_link_libraries(how-to-vulkan PRIVATE volk::volk SDL3::SDL3 ktx ${SLANG_LIBRARY})
+target_link_libraries(how-to-vulkan PRIVATE volk::volk SDL3::SDL3 ktx ${SLANG_LIBRARY} GPUOpen::VulkanMemoryAllocator)
 if (NOT WIN32)
     target_link_libraries(how-to-vulkan PRIVATE glm::glm-header-only)
 endif()

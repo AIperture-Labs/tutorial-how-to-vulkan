@@ -4,7 +4,7 @@
 rmdir := if os_family() == "windows" { "rm -Force" } else { "rm -fr" }
 install := "paru -S"
 uninstall := "paru -Rs"
-deps := "llvm lldb vulkan-devel lib32-nvidia-utils renderdoc glm ninja clang volk sdl3"
+deps := "llvm lldb vulkan-devel vulkan-memory-allocator lib32-nvidia-utils renderdoc glm ninja clang volk sdl3"
 
 
 [default]

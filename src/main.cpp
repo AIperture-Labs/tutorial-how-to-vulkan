@@ -12,11 +12,14 @@
 #include <SDL3/SDL_vulkan.h>
 #include <volk.h>
 #include <vulkan/vulkan.h>
+#define VMA_IMPLEMENTATION
+#include <vk_mem_alloc.h>
 
 
 VkInstance instance{ VK_NULL_HANDLE };
 VkDevice device{ VK_NULL_HANDLE };
 VkQueue queue{ VK_NULL_HANDLE };
+VmaAllocator allocator{ VK_NULL_HANDLE };
 
 static inline void chk(VkResult result)
 {
@@ -128,6 +131,21 @@ int main(int argc, char* argv[])
     };
     chk(vkCreateDevice(devices[deviceIndex], &deviceCI, nullptr, &device));
     vkGetDeviceQueue(device, queueFamily, 0, &queue);
+
+    // WMA
+    VmaVulkanFunctions vkFunctions{
+        .vkGetInstanceProcAddr = vkGetInstanceProcAddr,
+        .vkGetDeviceProcAddr = vkGetDeviceProcAddr,
+        .vkCreateImage = vkCreateImage
+    };
+    VmaAllocatorCreateInfo allocatorCI{
+        .flags = VMA_ALLOCATOR_CREATE_BUFFER_DEVICE_ADDRESS_BIT,
+        .physicalDevice = devices[deviceIndex],
+        .device = device,
+        .pVulkanFunctions = &vkFunctions,
+        .instance = instance,
+    };
+    chk(vmaCreateAllocator(&allocatorCI, &allocator));
 
 
     // Tear Down
